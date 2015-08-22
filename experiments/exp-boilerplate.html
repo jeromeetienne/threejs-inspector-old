@@ -46,11 +46,12 @@
 
 	var light	= new THREE.DirectionalLight()
 	light.position.set(1,1,1)
+	light.name	= 'myDirectional'
 	// light.color.set('red')
 	scene.add(light)
 
 	// add a torus knot	
-	var geometry	= new THREE.TorusKnotGeometry(0.5-0.12, 0.12, 32, 8);
+	var geometry	= new THREE.TorusKnotGeometry(0.5-0.12, 0.12, 128, 16);
 	// var geometry	= new THREE.BoxGeometry(1,1,1);
 	var material	= new THREE.MeshPhongMaterial({
 		// shading	: THREE.FlatShading,
@@ -60,9 +61,16 @@
 	var mesh	= new THREE.Mesh( geometry, material );
 	mesh.name	= 'torus knot'
 	scene.add( mesh );
+
+	var mesh2	= new THREE.Mesh( geometry, material );
+	mesh2.position.set(1,0,0)
+	mesh2.scale.set(0.5,0.5,0.5)
+	
+	mesh2.name	= 'torus knot2'
+	mesh.add( mesh2 );
 	
 	onRenderFcts.push(function(delta){
-		mesh.rotation.y += delta * Math.PI
+		mesh.rotation.y += delta * Math.PI / 10
 	})
 
 	// // add a torus	
