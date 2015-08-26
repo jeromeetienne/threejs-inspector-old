@@ -57,8 +57,9 @@ var PanelTreeView	= function(){
 	//		Comments
 	//////////////////////////////////////////////////////////////////////////////////
 
+container.content.appendChild( document.createElement('br') )
 	// create TreeView
-	var treeView = new TreeView( container.dom );
+	var treeView = new TreeView( container.content );
 	treeView.onSelect = function( object3dUuid ) {
 		if( object3dUuid === null )	treeView.clearActive()
 		InspectDevTools.plainFunction(function(uuid){
