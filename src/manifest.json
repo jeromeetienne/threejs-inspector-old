@@ -9,7 +9,7 @@
 		"48": "images/icon_48.png",
 		"16": "images/icon_16.png"
 	},
-	"description": "Three.js Inpector is an extension to inspect three.js page. It allow to interact with almost all three.js demos out there.",
+	"description": "Three.js Inspector is an extension to inspect three.js page. It allow to interact with almost all three.js demos out there.",
 	"background": {
 		"scripts": [
 			"background.js"
