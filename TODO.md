@@ -1,6 +1,4 @@
 ## Next steps
-- fix css to inline the popup menu and help buttons
-  - see how the scale lock is done, do the the same
 - support for texture in shader material uniforms
   - good example http://127.0.0.1:8000/examples/webgl_materials_bumpmap_skin.html
   - currently the texture is read in the inspector
@@ -27,6 +25,8 @@
 
 
 ---
+- DONE fix css to inline the popup menu and help buttons
+  - see how the scale lock is done, do the the same
 - WONT onSelect ui, set $_ so no action is needed to share in console
   - normal workflow in chrome devtools. Find a reference
   - https://developer.chrome.com/devtools/docs/commandline-api#_
