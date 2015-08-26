@@ -11,7 +11,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
                 if (tabId in connections) {
                         connections[tabId].postMessage(request);
                 } else {
-                        console.log("Tab not found in connection list.");
+                        console.log("Tab not found in connection list.", tabId, request);
                 }
         } else {
                 console.log("sender.tab not defined.");

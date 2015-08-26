@@ -4,6 +4,7 @@ chrome.devtools.panels.create( "Three.js Inspector",
         "panel.html",
         function(panel) {
                 // code invoked on panel creation
+                console.log('three.js inspector: Panel created')
         }
 );
 

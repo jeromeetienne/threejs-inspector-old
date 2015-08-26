@@ -1,5 +1,6 @@
 window.addEventListener('message', function(event) {
 	
+	console.log('slslslslsl')
 	// console.log( 'message ', event );
 
 	if (event.source !== window) {
