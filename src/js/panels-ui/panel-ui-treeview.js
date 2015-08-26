@@ -44,12 +44,13 @@ var PanelTreeView	= function(){
 	tiltButton.setTitle('Medkit to repair three.js inspector. push it in case of panic :)')
 	tiltButton.dom.classList.add('fa-bolt')
 	tiltButton.dom.style.cssFloat = 'right'
-	tiltButton.onClick(function(){
+	tiltButton.onClick(function(event){
 		InspectDevTools.plainFunction(function(){
 			Inspect3js.injectInThreejs()
 			Inspect3js.purgeObsoleteObjects()
 			console.log('Tried to tilt three.js inspector in this page. I hope it works better...')
-		})		
+		})
+		event.stopPropagation()
 	})
 	container.titleElement.add(tiltButton)
 

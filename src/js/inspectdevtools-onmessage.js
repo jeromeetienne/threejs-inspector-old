@@ -27,7 +27,13 @@ InspectDevTools._onMessage	= function(message){
 				console.assert(request.status === 200)
   				var content = request.responseText
 				
-				chrome.devtools.inspectedWindow.eval( content )
+				chrome.devtools.inspectedWindow.eval( content, function(result, isException){
+					if( isException ){
+						console.error('Exception while eval()', url)
+					}else{
+						// console.log('result = ', result)
+					}
+				})
 			}
 			break;
 		case 'init':

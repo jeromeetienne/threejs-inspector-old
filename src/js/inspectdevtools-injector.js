@@ -12,7 +12,13 @@ InspectDevTools.propertyOnObject3d	= function(property, value){
 	}
 	
 	var jsCode	= 'Inspect3js.ChangeProperty( "' + editor.selected.uuid + '",' + JSON.stringify(data) + ' )'
-	chrome.devtools.inspectedWindow.eval( jsCode );		
+	chrome.devtools.inspectedWindow.eval( jsCode , function(result, isException){
+		if( isException ){
+			console.error('Exception while eval()', jsCode)
+		}else{
+			// console.log('result = ', result)
+		}
+	});		
 }
 
 
@@ -30,7 +36,13 @@ InspectDevTools.plainFunction	= function(fct, args){
 				+ JSON.stringify(args)
 			+ ')'
 
-	chrome.devtools.inspectedWindow.eval( jsCode );
+	chrome.devtools.inspectedWindow.eval( jsCode, function(result, isException){
+		if( isException ){
+			console.error('Exception while eval()', jsCode)
+		}else{
+			// console.log('result = ', result)
+		}
+	});
 }
 
 /**
@@ -51,5 +63,11 @@ InspectDevTools.functionOnObject3d	= function(fct, args){
 			+ ')'
 // console.log('functionOnObject3d', jsCode)
 
-	chrome.devtools.inspectedWindow.eval( jsCode );		
+	chrome.devtools.inspectedWindow.eval( jsCode, function(result, isException){
+		if( isException ){
+			console.error('Exception while eval()', jsCode)
+		}else{
+			// console.log('result = ', result)
+		}
+	});		
 }

@@ -1,4 +1,7 @@
 ## Next steps
+- failing to load pages
+  - http://127.0.0.1:8000/examples/webgl_lod.html
+- include webgl stats in project 
 - support for texture in shader material uniforms
   - good example http://127.0.0.1:8000/examples/webgl_materials_bumpmap_skin.html
   - currently the texture is read in the inspector
