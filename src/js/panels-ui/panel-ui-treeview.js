@@ -75,7 +75,7 @@ var PanelTreeView	= function(){
 		InspectDevTools.plainFunction(function(uuid){
 			var object = Inspect3js.getObjectByUuid(uuid)
 			window.$object3d = object
-			console.log('three.js inpector: Object3D exported as $object3d')
+			console.log('three.js inspector: Object3D exported as $object3d')
 		}, [object3dUuid])
 	}
 	
