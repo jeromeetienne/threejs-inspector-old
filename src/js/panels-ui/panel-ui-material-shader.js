@@ -128,7 +128,7 @@ var PanelMaterialShader	= function(faceMaterialIndex){
 						}, [colorRow.value.getHexValue(), name, faceMaterialIndex]);
 					})
 				}else if( data.type === 't' ){
-					var mapRow = new PanelTexture(propertyPrefix+'.uniforms.'+name)
+					var mapRow = new PanelTexture(propertyPrefix+'.uniforms.'+name+'.value')
 					mapRow.textureRow.setLabel(name)
 					container.add( mapRow );
 					mapRow.updateUI(data.value)
