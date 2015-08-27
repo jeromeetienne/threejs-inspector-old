@@ -10,18 +10,49 @@ var PanelTexture	= function(propertyPrefix){
 	var container	= new UI.Panel()
 	var _this	= container
 
+	
 	//////////////////////////////////////////////////////////////////////////////////
 	//		comments
 	//////////////////////////////////////////////////////////////////////////////////
 
-	var textureRow = new UI.TextureRow2().setLabel('Texture').onChange(function(){
+	var textureRow = new UI.TextureRow().setLabel('Texture').onChange(function(){
 		var textureJson = textureRow.getValue();
 		update(textureJson)
 	})
+	textureRow.setPadding('0px')
 	_this.add( textureRow );
 
         _this.textureRow = textureRow
 
+	//////////////////////////////////////////////////////////////////////////////////
+	//		popupMenu
+	//////////////////////////////////////////////////////////////////////////////////
+	var popupMenu	= UI.PopupMenuHelper.createSelect({
+		''			: '--- Options ---',
+		'openInTab'		: 'Open in Tab',
+		'exportInConsole'	: 'Export in Console',
+	}, onPopupMenuChange)
+	textureRow.typeRow.add(popupMenu)
+	
+	function onPopupMenuChange(value){
+		if( value === 'openInTab' ){
+			var url	= textureRow.uiTexture.getValue()
+			window.open( url, '_blank' );
+			window.focus();
+			return
+		}else if( value === 'exportInConsole' ){
+			InspectDevTools.functionOnObject3d(function(object3d, propertyPrefix){
+				var texture	= eval('object3d.'+propertyPrefix)
+				window.$texture = texture
+				console.log('three.js inspector: Material exported as $texture')
+				console.dir($texture)
+			}, [propertyPrefix])
+			return
+		}else{
+			console.assert(false)
+		}
+	}
+	
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		comments

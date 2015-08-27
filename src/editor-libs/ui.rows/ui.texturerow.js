@@ -6,119 +6,31 @@ UI.TextureRow = function(){
 	UI.Panel.call( this );
 	// build the container
 	var container	= this
+	var textureJson	= null
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		handle onChange
+	//////////////////////////////////////////////////////////////////////////////////
 
+	function dispatchOnChange(){
+		_onChangeCallback	&& _onChangeCallback()
+	}
+
+	var _onChangeCallback	= null
+	this.onChange	= function(value){
+		_onChangeCallback	= value
+		return this
+	}
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Comment								//
 	//////////////////////////////////////////////////////////////////////////////////
-	var firstRow	= new UI.Panel()
-	container.add(firstRow)
 
-	var label	= new UI.Text( '' ).setWidth( '90px' )
-	firstRow.add( label );
-	container.label	= label;
-
-	var enabled	= new UI.Checkbox().onChange(update).setTitle('To enable/disable this texture')
-	firstRow.add( enabled );
-	container.enabled	= enabled;
-
-	var value	= new UI.Texture().onChange(function(){
-		updateUI()
-		update()
-	});
-	firstRow.add( value );
-	container.value	= value;
-
-
-	var foldButton	= new UI.FontAwesomeIcon().addClass('fa-plus')
-	foldButton.dom.style.marginTop	= '0.1em';
-	foldButton.setTitle('Show/hide texture details.')
-	foldButton.onClick(function(){
-		foldToggle();
-	});
-	firstRow.add( foldButton );
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		wrapRow
-	//////////////////////////////////////////////////////////////////////////////////
-
-	var wrapRow	= new UI.Panel().setDisplay('none')
-	container.add(wrapRow)
-
-	wrapRow.add( new UI.Text('- wrap').setWidth( '90px' ) );
-
-	var wrapOptions	= {
-		'ClampToEdgeWrapping'	: 'ClampToEdge',
-		'RepeatWrapping'	: 'Repeat',
-		'MirroredRepeatWrapping': 'MirroredRepeat',
-	}
-	wrapRow.add( new UI.Text('S:') );
-	var wrapS = new UI.Select().setOptions(wrapOptions).onChange(function(){
-		if( wrapLock.getValue() === true ){
-			wrapT.setValue( wrapS.getValue() )
-		}
-		update()
-	})
-	wrapRow.add(wrapS)
-
-	wrapRow.add( new UI.Text(' T:') );
-	var wrapT = new UI.Select().setOptions(wrapOptions).onChange(function(){
-		if( wrapLock.getValue() === true ){
-			wrapS.setValue( wrapT.getValue() )
-		}
-		update()
-	})
-	wrapRow.add(wrapT)
-
-	var wrapLock	= new UI.Checkbox().onChange(function(){
-		if( wrapLock.getValue() === true ){
-			wrapT.setValue( wrapS.getValue() )
-		}
-	})
-	wrapLock.setPosition('absolute').setLeft('75px').setTitle('lock both wrap mode').setValue(true)
-	wrapRow.add( wrapLock )
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		repeatRow
-	//////////////////////////////////////////////////////////////////////////////////
-
-	var repeatRow = new UI.LockableVector2Row().setLabel('- repeat').setDisplay('none').onChange(update);
-	repeatRow.lock.setValue(true)
-	container.add( repeatRow );
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		offsetRow
-	//////////////////////////////////////////////////////////////////////////////////
-
-	var offsetRow = new UI.Vector2Row().setLabel('- offset').setDisplay('none').onChange(update);
-	container.add( offsetRow );
-
-	//////////////////////////////////////////////////////////////////////////////////
-	//		anisotropyRow
-	//////////////////////////////////////////////////////////////////////////////////
-
-	var anisotropyRow = new UI.NumberRow().setLabel('- anisotropy').setDisplay('none').onChange(update);
-	anisotropyRow.value.setPrecision(0)
-	container.add( anisotropyRow );
-
-	var minAnisotropy	= new UI.FontAwesomeIcon().addClass('fa-angle-double-left')
-	minAnisotropy.setTitle('Set anisotropy to the minimum')
-	minAnisotropy.setPosition( 'absolute' ).setLeft( '150px' )
-	anisotropyRow.add(minAnisotropy)
-	minAnisotropy.onClick(function(){
-		var renderer	= editor.viewport.renderer
-		// console.dir(renderer)
-		anisotropyRow.setValue(1)
-		update()
-	})
-
-	var maxAnisotropy	= new UI.FontAwesomeIcon().addClass('fa-angle-double-right')
-	maxAnisotropy.setTitle('Set anisotropy to the maximum')
-	maxAnisotropy.setPosition( 'absolute' ).setLeft( '170px' )
-	anisotropyRow.add(maxAnisotropy)
-	maxAnisotropy.onClick(function(){
-		var renderer	= editor.viewport.renderer
-		anisotropyRow.setValue( renderer.getMaxAnisotropy() )
-		update()
+	var typeRow = new UI.TextRow().setLabel('Texture')
+	container.add( typeRow );
+	this.typeRow = typeRow
+	
+	typeRow.onClick(function(){
+		foldToggle()
 	})
 
 	//////////////////////////////////////////////////////////////////////////////////
@@ -130,7 +42,6 @@ UI.TextureRow = function(){
 		return true
 	}
 	function foldToggle(){
-		// handle toggle button
 		if( isFolded() ){
 			foldButton.dom.classList.remove('fa-plus')
 			foldButton.dom.classList.add('fa-minus')
@@ -138,95 +49,182 @@ UI.TextureRow = function(){
 			foldButton.dom.classList.add('fa-plus')
 			foldButton.dom.classList.remove('fa-minus')
 		}
-
-		syncDisplay()
+		foldSyncDisplay()
 	}
-
-	function syncDisplay(){
+	function foldSyncDisplay(){
 		// actually display or not depending on current state
 		var display	= isFolded() ? 'none'	: ''
+		uuidRow.setDisplay(display)
+		nameRow.setDisplay(display)
+
+		imageRow.setDisplay(display)
+		anisotropyRow.setDisplay(display)
+
+		magFilterRow.setDisplay(display)
+		minFilterRow.setDisplay(display)
+
 		wrapRow.setDisplay(display)
 		repeatRow.setDisplay(display)
 		offsetRow.setDisplay(display)
-		anisotropyRow.setDisplay(display)
 	}
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//		handle onChange
-	//////////////////////////////////////////////////////////////////////////////////
-	function update(){
-		var texture	= value.getValue()
 
-		texture.wrapS	= wrapStringToValue( wrapS.getValue() )
-		texture.wrapT	= wrapStringToValue( wrapT.getValue() )
-
-		repeatRow.update(texture.repeat)
-		offsetRow.update(texture.offset)
-		anisotropyRow.update(texture, 'anisotropy')
-
-		texture.needsUpdate	= true
-
-		_onChange()
-
-		return
-
-		function wrapStringToValue(str){
-			if( str === 'RepeatWrapping' )		return THREE.RepeatWrapping
-			if( str === 'ClampToEdgeWrapping' )	return THREE.ClampToEdgeWrapping
-			if( str === 'MirroredRepeatWrapping' )	return THREE.MirroredRepeatWrapping
-			console.assert(false)
-		}
-	}
-
-	var _onChange	= function(){}
-	this.onChange	= function(value){
-		_onChange	= value
-		return this
-	}
-
-	function updateUI(){
-		enabled.setValue(value.getValue() !== null ? true : false)
-
-		var texture	= value.getValue()
-		if( texture === null )	return
-
-		wrapS.setValue( wrapValueToString(texture.wrapS) )
-		wrapT.setValue( wrapValueToString(texture.wrapT) )
-
-		repeatRow.updateUI(texture.repeat)
-		offsetRow.updateUI(texture.offset)
-		anisotropyRow.updateUI(texture.anisotropy)
-
-		syncDisplay()
-
-		return
-
-		function wrapValueToString(value){
-			if( value === THREE.RepeatWrapping )		return 'RepeatWrapping'
-			if( value === THREE.ClampToEdgeWrapping )	return 'ClampToEdgeWrapping'
-			if( value === THREE.MirroredRepeatWrapping )	return 'MirroredRepeatWrapping'
-			console.assert(false)
-		}
-	}
-	//////////////////////////////////////////////////////////////////////////////////
-	//		handle label
-	//////////////////////////////////////////////////////////////////////////////////
+	var foldButton	= new UI.FontAwesomeIcon().addClass('fa-plus').onClick(foldToggle)
+	// foldButton.dom.style.marginTop	= '0.1em';
+	foldButton.dom.style.cssFloat	= 'left';
+	foldButton.dom.style.fontSize	= '1em';
+	foldButton.dom.style.marginLeft	= '-1em';
+	foldButton.setTitle('Show/hide texture details.')
+	typeRow.add( foldButton );
 	
+	foldButton.onClick(function(){
+		foldToggle()
+	})
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comment								//
+	//////////////////////////////////////////////////////////////////////////////////
+	var imageRow	= new UI.Panel()
+	container.add(imageRow)
+
+
+	var label	= new UI.Text( '- image' ).setWidth( '90px' )
+	imageRow.add( label );
+
+	var uiTexture	= new UI.Texture().onChange(dispatchOnChange);
+	imageRow.add( uiTexture );
+	container.uiTexture	= uiTexture;
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
+	var uuidRow	= new UI.InputRow().onChange(dispatchOnChange)
+	uuidRow.setDisplay('none').setLabel('- uuid')
+	container.add( uuidRow );
+
+	var nameRow	= new UI.InputRow().onChange(dispatchOnChange)
+	nameRow.setDisplay('none').setLabel('- name')
+	container.add( nameRow );
+
+	var anisotropyRow = new UI.NumberRow().setDisplay('none').setLabel('- anisotropy').onChange(dispatchOnChange)
+	anisotropyRow.value.setRange(0.1,128).setPrecision(0)
+	container.add( anisotropyRow );
+
+	var filterOptions	= {
+		'1003'	: 'Nearest',
+		'1004'	: 'NearestMipMapNearest',
+		'1005'	: 'NearestMipMapLinear',
+		'1006'	: 'Linear',
+		'1007'	: 'LinearMipMapNearest',
+		'1008'	: 'LinearMipMapLinear',
+	}
+	
+	
+	var magFilterRow = new UI.SelectRow().setDisplay('none').setLabel('- mag filter').onChange(dispatchOnChange)
+	magFilterRow.value.setOptions(filterOptions)
+	container.add( magFilterRow );
+	
+	var minFilterRow = new UI.SelectRow().setDisplay('none').setLabel('- min filter').onChange(dispatchOnChange)
+	minFilterRow.value.setOptions(filterOptions)
+	container.add( minFilterRow );
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		wrapRow
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var wrapRow	= new UI.Panel()
+	container.add(wrapRow)
+
+	wrapRow.add( new UI.Text('- wrap').setWidth( '90px' ) );
+
+	var wrapOptions	= {
+		'1001'	: 'ClampToEdge',
+		'1000'	: 'Repeat',
+		'1002'	: 'MirroredRepeat',
+	}
+	wrapRow.add( new UI.Text('S:') );
+	var wrapS = new UI.Select().setOptions(wrapOptions).onChange(function(){
+		if( wrapLock.getValue() === true )	wrapT.setValue( wrapS.getValue() )
+		dispatchOnChange()
+	})
+	wrapRow.add(wrapS)
+
+	wrapRow.add( new UI.Text(' T:') );
+	var wrapT = new UI.Select().setOptions(wrapOptions).onChange(function(){
+		if( wrapLock.getValue() === true )	wrapS.setValue( wrapT.getValue() )
+		dispatchOnChange()
+	})
+	wrapRow.add(wrapT)
+
+	var wrapLock	= new UI.Checkbox().onChange(function(){
+		if( wrapLock.getValue() === true )	wrapT.setValue( wrapS.getValue() )
+	})
+	wrapLock.setPosition('absolute').setLeft('75px').setTitle('lock both wrap mode').setValue(true)
+	wrapRow.add( wrapLock )
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		repeatRow
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var repeatRow = new UI.LockableVector2Row().setLabel('- repeat').setDisplay('none')
+	repeatRow.onChange(function(){
+		repeatRow.update(textureJson.repeat)
+		dispatchOnChange()
+	})
+	repeatRow.lock.setValue(true)
+	container.add( repeatRow );
+
+	repeatRow.valueX.setRange(0.001, Infinity).setPrecision(2)
+	repeatRow.valueY.setRange(0.001, Infinity).setPrecision(2)
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		offsetRow
+	//////////////////////////////////////////////////////////////////////////////////
+
+	var offsetRow = new UI.Vector2Row().setLabel('- offset').setDisplay('none').onChange(dispatchOnChange)
+	container.add( offsetRow );
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
 	/**
 	 * set the label of the row
 	 * @param {String} value - the label value
 	 */
 	this.setLabel	= function(value){
-		label.setValue(value)
+		typeRow.setLabel(value)
 		return this
 	}
+	
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
+	
+	this.getValue	= function(){
+		
+		if( textureJson.sourceFile !== undefined )	textureJson.sourceFile	= uiTexture.getValue()
+		if( textureJson.uuid !== undefined )	textureJson.uuid	= uuidRow.getValue()
+		if( textureJson.name !== undefined )	textureJson.name	= nameRow.getValue()
+		if( textureJson.anisotropy !== undefined )	textureJson.anisotropy	= anisotropyRow.getValue()
 
-	//////////////////////////////////////////////////////////////////////////////////
-	//		honor .update and .updateUI api
-	//////////////////////////////////////////////////////////////////////////////////
-	this.update	= function(scope, property){
-		var isEnabled	= enabled.getValue() === true ? true : false
-		scope[property]	= isEnabled ? value.getValue() : null
+		if( textureJson.magFilter !== undefined )	textureJson.magFilter	= parseInt(magFilterRow.getValue(), 10)
+		if( textureJson.minFilter !== undefined )	textureJson.minFilter	= parseInt(minFilterRow.getValue(), 10)
+
+		if( textureJson.wrapS !== undefined )	textureJson.wrapS	= parseInt(wrapS.getValue(), 10)
+		if( textureJson.wrapT !== undefined )	textureJson.wrapT	= parseInt(wrapT.getValue(), 10)
+		
+		if( textureJson.repeat !== undefined ){
+			textureJson.repeat.x	= repeatRow.valueX.getValue()
+			textureJson.repeat.y	= repeatRow.valueY.getValue()
+		}
+		
+		if( textureJson.offset !== undefined ){
+			textureJson.offset.x	= offsetRow.valueX.getValue()
+			textureJson.offset.y	= offsetRow.valueY.getValue()
+		}
+		
+		// console.log('texture getValue', textureJson)
+		
+		return textureJson
 	}
 
 	/**
@@ -234,13 +232,73 @@ UI.TextureRow = function(){
 	 * @param  {THREE.Texture|null} [newValue]	- the texture to define
 	 */
 	this.updateUI	= function(newValue){
+		// update value
+		textureJson	= newValue !== undefined ? newValue : null
 		// if vector is undefined, hide the row, else display it
 		container.setDisplay(newValue !== undefined ? '' : 'none')
 		// if vector is undefined, return now
 		if( newValue === undefined )	return
-		// set the new value1
-		value.setValue( newValue );
-		updateUI()
+		// set the new value
+		typeRow.setValue( textureJson.sniffType )
+		uiTexture.setValue( textureJson.sourceFile )
+
+		uuidRow.setValue( textureJson.uuid )
+		nameRow.setValue( textureJson.name )
+		anisotropyRow.setValue( textureJson.anisotropy )
+
+		magFilterRow.setValue( textureJson.magFilter )
+		minFilterRow.setValue( textureJson.minFilter )
+
+		wrapS.setValue( textureJson.wrapS )
+		wrapT.setValue( textureJson.wrapT )
+
+		repeatRow.updateUI( textureJson.repeat )
+		offsetRow.updateUI( textureJson.offset )
+		
+		foldSyncDisplay()
 	}
+	
+
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Handle drop event
+	//////////////////////////////////////////////////////////////////////////////////
+
+	container.dom.addEventListener('dragenter', function(event){
+		container.dom.style.backgroundColor	= '#ccc'
+		container.dom.style.borderRadius	= '5px'
+
+	})
+	container.dom.addEventListener('dragleave', function(event){
+		container.dom.style.backgroundColor	= ''
+
+	})
+	container.dom.addEventListener('dragover', function(event){
+		container.dom.style.backgroundColor	= '#ccc'
+		event.preventDefault();
+	})
+
+	container.dom.addEventListener('drop', function(event){
+		container.dom.style.backgroundColor	= '#0066ff'
+
+		event.preventDefault();
+
+		var reader = new FileReader();
+		reader.onload = function(event) {
+			container.dom.style.backgroundColor	= ''
+
+			var url = event.currentTarget.result
+			// console.log('file loaded', url)
+			uiTexture.setValue(url)
+			dispatchOnChange()
+		};
+		reader.readAsDataURL( event.dataTransfer.files[ 0 ] );
+
+	})
+	//////////////////////////////////////////////////////////////////////////////////
+	//		Comments
+	//////////////////////////////////////////////////////////////////////////////////
+
+
+	foldSyncDisplay()
 }
 UI.TextureRow.prototype = Object.create( UI.Panel.prototype );

@@ -9,6 +9,8 @@ It is a fork from
 by the excelent @thespite. Check it out! 
 
 ## History 1.2.9
+- added export-to-console for texture
+- added console.dir when exporting objects to console
 - better css for inline link to three.js help
 
 ## History 1.2.8
