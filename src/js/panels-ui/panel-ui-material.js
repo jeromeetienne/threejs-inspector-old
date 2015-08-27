@@ -278,9 +278,10 @@ var PanelMaterial	= function(faceMaterialIndex){
 	normalMapRow.textureRow.setLabel('Normal map')
 	container.add( normalMapRow );
 	
-	var normalScaleRow = new UI.Vector2Row().onChange(update)
+	var normalScaleRow = new UI.LockableVector2Row().onChange(update)
 	normalScaleRow.setLabel('normalScale')
 	container.add( normalScaleRow );
+	normalScaleRow.setLocked(true)
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		update()
@@ -343,6 +344,7 @@ var PanelMaterial	= function(faceMaterialIndex){
 
 		if( material.bumpScale !== undefined ) injectProperty(propertyPrefix+'.bumpScale', bumpScaleRow.getValue())
 		if( material.normalMap !== undefined ){
+			normalScaleRow.update(material.normalScale)
 			injectProperty(propertyPrefix+'.normalScale.x', normalScaleRow.valueX.getValue())
 			injectProperty(propertyPrefix+'.normalScale.y', normalScaleRow.valueY.getValue())			
 		}

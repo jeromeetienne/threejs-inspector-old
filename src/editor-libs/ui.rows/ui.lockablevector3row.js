@@ -7,21 +7,21 @@ UI.LockableVector3Row = function () {
 
 	var scaleLock	= new UI.Checkbox().setPosition( 'absolute' ).setLeft( '75px' ).setTitle('lock values together')
 	// build the values
-	var updateSrc	= ''
+	var changeSrc	= ''
 	var valueX	= new UI.Number().setWidth( '50px' ).setColor('red').onChange(function(){
-		updateSrc	= 'fromX'
-		update()
-		updateSrc	= ''
+		changeSrc	= 'fromX'
+		dispatchChange()
+		changeSrc	= ''
 	} );
 	var valueY	= new UI.Number().setWidth( '50px' ).setColor('green').onChange( function(){
-		updateSrc	= 'fromY'
-		update()
-		updateSrc	= ''
+		changeSrc	= 'fromY'
+		dispatchChange()
+		changeSrc	= ''
 	} );
 	var valueZ	= new UI.Number().setWidth( '50px' ).setColor('dodgerblue').onChange( function(){
-		updateSrc	= 'fromZ'
-		update()
-		updateSrc	= ''
+		changeSrc	= 'fromZ'
+		dispatchChange()
+		changeSrc	= ''
 	} );
 
 	this.valueX	= valueX
@@ -44,7 +44,7 @@ UI.LockableVector3Row = function () {
 		scaleLock.setValue(value)
 		return this
 	}
-	function update(){
+	function dispatchChange(){
 		callback	&& callback()
 	}
 
@@ -81,19 +81,19 @@ UI.LockableVector3Row = function () {
 		if( vector === undefined )	return
 		// honor lock
 		if( row.isLocked() === true ){
-			if( updateSrc === 'fromX' ){
+			if( changeSrc === 'fromX' ){
 				var ratio	= valueX.getValue() / vector.x;
 				valueY.setValue( valueY.getValue() * ratio );
 				valueZ.setValue( valueZ.getValue() * ratio );				
-			}else if( updateSrc === 'fromY' ){
+			}else if( changeSrc === 'fromY' ){
 				var ratio	= valueY.getValue() / vector.y;
 				valueX.setValue( valueX.getValue() * ratio );
 				valueZ.setValue( valueZ.getValue() * ratio );				
-			}else if( updateSrc === 'fromZ' ){
+			}else if( changeSrc === 'fromZ' ){
 				var ratio	= valueZ.getValue() / vector.z;
 				valueY.setValue( valueY.getValue() * ratio );
 				valueX.setValue( valueX.getValue() * ratio );				
-			}else if( updateSrc === '' ){
+			}else if( changeSrc === '' ){
 			}else	console.assert(false)
 		}
 		// update value

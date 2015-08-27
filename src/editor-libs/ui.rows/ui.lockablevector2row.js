@@ -8,16 +8,16 @@ UI.LockableVector2Row = function () {
 	var lock	= new UI.Checkbox().setPosition( 'absolute' ).setLeft( '75px' )
 				.setTitle('lock values together')
 	// build the values
-	var updateSrc	= ''
+	var changeSrc	= ''
 	var valueX	= new UI.Number().setWidth( '50px' ).setColor('red').onChange(function(){
-		updateSrc	= 'fromX'
-		update()
-		updateSrc	= ''
+		changeSrc	= 'fromX'
+		dispatchChange()
+		changeSrc	= ''
 	} );
 	var valueY	= new UI.Number().setWidth( '50px' ).setColor('green').onChange( function(){
-		updateSrc	= 'fromY'
-		update()
-		updateSrc	= ''
+		changeSrc	= 'fromY'
+		dispatchChange()
+		changeSrc	= ''
 	} );
 
 	this.valueX	= valueX
@@ -36,7 +36,11 @@ UI.LockableVector2Row = function () {
 	this.isLocked	= function(){
 		return lock.getValue() === true ? true : false
 	}
-	function update(){
+	this.setLocked = function(value){
+		lock.setValue(value)
+		return this
+	}
+	function dispatchChange(){
 		callback	&& callback()
 	}
 
@@ -71,13 +75,14 @@ UI.LockableVector2Row = function () {
 		if( vector === undefined )	return
 		// honor lock
 		if( row.isLocked() === true ){
-			if( updateSrc === 'fromX' ){
+console.log('update locked vector2', changeSrc)
+			if( changeSrc === 'fromX' ){
 				var ratio	= valueX.getValue() / vector.x;
 				valueY.setValue( valueY.getValue() * ratio );
-			}else if( updateSrc === 'fromY' ){
+			}else if( changeSrc === 'fromY' ){
 				var ratio	= valueY.getValue() / vector.y;
 				valueX.setValue( valueX.getValue() * ratio );
-			}else if( updateSrc === '' ){
+			}else if( changeSrc === '' ){
 			}else	console.assert(false)
 		}
 		// update value

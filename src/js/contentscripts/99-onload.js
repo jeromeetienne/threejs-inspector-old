@@ -10,7 +10,7 @@
 window.Inspect3js	= window.Inspect3js	|| {}
 
 
-// Inspect3js.rafThrottler	= new RafThrottler()
+Inspect3js.rafThrottler	= new RafThrottler()
 
 //////////////////////////////////////////////////////////////////////////////////
 //		Comments
