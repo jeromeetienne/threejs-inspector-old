@@ -48,7 +48,7 @@ var PanelTreeView	= function(){
 		InspectDevTools.plainFunction(function(){
 			Inspect3js.injectInThreejs()
 			Inspect3js.purgeObsoleteObjects()
-			console.log('Tried to tilt three.js inspector in this page. I hope it works better...')
+			console.log('three.js inspector: Tried to tilt this page. I hope it works better...')
 		})
 		event.stopPropagation()
 	})
@@ -78,6 +78,7 @@ container.content.appendChild( document.createElement('br') )
 			var object = Inspect3js.getObjectByUuid(uuid)
 			window.$object3d = object
 			console.log('three.js inspector: Object3D exported as $object3d')
+			console.dir($object3d)
 		}, [object3dUuid])
 	}
 	

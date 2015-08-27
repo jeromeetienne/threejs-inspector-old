@@ -28,7 +28,7 @@ chrome.runtime.onConnect.addListener(function(port) {
                 // Register initial connection
                 if (request.name == 'init') {
                         connections[request.tabId] = port;
-                        
+                        console.log('three.js inspector: background page connected')
                         port.onDisconnect.addListener(function() {
                                 delete connections[request.tabId];
                         });

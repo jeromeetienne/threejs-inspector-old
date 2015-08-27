@@ -52,6 +52,7 @@ var PanelObject3D	= function(){
 			InspectDevTools.functionOnObject3d(function(object3d){
 				window.$object3d = object3d
 				console.log('three.js inspector: Object3D exported as $object3d')
+				console.dir($object3d)
 			})
 			return
 		}else{

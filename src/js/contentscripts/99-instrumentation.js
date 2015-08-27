@@ -19,6 +19,9 @@ function reccursiveAddObject( object3d, parent ) {
 
 	addObject( object3d, parent );
 
+	// // in some rare conditions and broken demo, object3d.children is undefined
+	// if( object3d.children === undefined )	return
+	
 	object3d.children.forEach( function( child ) {
 		reccursiveAddObject( child, object3d  );
 	} );

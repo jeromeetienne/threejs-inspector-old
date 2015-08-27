@@ -63,6 +63,7 @@ var PanelGeometry	= function(){
 			InspectDevTools.functionOnObject3d(function(object3d){
 				window.$geometry = object3d.geometry
 				console.log('three.js inspector: Geometry exported as $geometry')
+				console.dir($geometry)
 			})
 			return
 		}else{

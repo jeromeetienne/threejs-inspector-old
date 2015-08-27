@@ -30,6 +30,7 @@ InspectDevTools._onMessage	= function(message){
 				chrome.devtools.inspectedWindow.eval( content, function(result, isException){
 					if( isException ){
 						console.error('Exception while eval()', url)
+						console.error(isException.value)
 					}else{
 						// console.log('result = ', result)
 					}

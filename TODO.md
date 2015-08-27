@@ -1,7 +1,12 @@
 ## Next steps
+- try to do an experiment of an extension which inject a script
+  - standalone for better understanding
+  - https://developer.chrome.com/extensions/devtools#injecting
 - failing to load pages
+  - http://127.0.0.1:8000/examples/webgl_animation_skinning_blending.html
   - http://127.0.0.1:8000/examples/webgl_lod.html
 - include webgl stats in project 
+  - https://github.com/jeromeetienne/bigredbutton.js/blob/master/src/bigredbutton.webgl.js
 - support for texture in shader material uniforms
   - good example http://127.0.0.1:8000/examples/webgl_materials_bumpmap_skin.html
   - currently the texture is read in the inspector

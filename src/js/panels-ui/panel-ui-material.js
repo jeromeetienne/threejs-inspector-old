@@ -128,6 +128,7 @@ var PanelMaterial	= function(faceMaterialIndex){
 				var material = faceMaterialIndex === -1 ? object3d.material : object3d.material.materials[faceMaterialIndex]
 				window.$material = material
 				console.log('three.js inspector: Material exported as $material')
+				console.dir($material)
 			}, [faceMaterialIndex])
 			return
 		}else{
