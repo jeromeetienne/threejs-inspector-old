@@ -287,7 +287,7 @@ UI.TextureRow = function(){
 			container.dom.style.backgroundColor	= ''
 
 			var url = event.currentTarget.result
-			// console.log('file loaded', url)
+			console.log('file loaded. url length', url.length)
 			uiTexture.setValue(url)
 			dispatchOnChange()
 		};
