@@ -2,6 +2,9 @@
 - try to do an experiment of an extension which inject a script
   - standalone for better understanding
   - https://developer.chrome.com/extensions/devtools#injecting
+  - call that src2 and start reimplementing the extensions
+- switch to .launchScript instead of the function.toString eval
+  - require to pass stuff to background page
 - failing to load pages
   - http://127.0.0.1:8000/examples/webgl_animation_skinning_blending.html
   - http://127.0.0.1:8000/examples/webgl_lod.html
