@@ -7,7 +7,7 @@
   - require to pass stuff to background page
 - failing to load pages
   - http://127.0.0.1:8000/examples/webgl_animation_skinning_blending.html
-  - http://127.0.0.1:8000/examples/webgl_lod.html
+  - http://127.0.0.1:8000/examples/webgl_lod.html - just slow
 - include webgl stats in project 
   - https://github.com/jeromeetienne/bigredbutton.js/blob/master/src/bigredbutton.webgl.js
 - support for texture in shader material uniforms
@@ -19,6 +19,9 @@
   - like '.material.map' or 'material.uniforms.diffuse'
   - it is evaluated with eval()
   - STATUS started in panel-ui-texture.js
+- switch to execute script whenever possible
+  - https://developer.chrome.com/extensions/tabs#method-executeScript
+  - not as simple as it seems
   
 
 - FOCUS ON SCENE GRABBING

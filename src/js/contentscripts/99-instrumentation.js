@@ -93,6 +93,8 @@ Inspect3js.instrumentWebGLRenderer	= function(renderer){
 		
 		// reccursiveAddObject(scene)
 		
+		// // notify render event 
+		// // - disabled as it takes rescources and isnt used
 		// window.postMessage({
 		// 	source	: 'ThreejsEditor', 
 		// 	method	: 'render', 

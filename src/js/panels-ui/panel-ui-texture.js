@@ -68,6 +68,7 @@ var PanelTexture	= function(propertyPrefix){
 
 	function update(textureJson){
 		InspectDevTools.functionOnObject3d(function(object3d, propertyPrefix, textureJson){
+			// console.log('update texture', 'object3d.'+propertyPrefix)
 			var texture	= eval('object3d.'+propertyPrefix)
 
 			if( textureJson.uuid !== undefined )		texture.uuid = textureJson.uuid
