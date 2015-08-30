@@ -1,7 +1,6 @@
 window.addEventListener('message', function(event) {
 	
-	console.log('slslslslsl')
-	// console.log( 'message ', event );
+	// console.log('slslslslsl3')
 
 	if (event.source !== window) {
 		return;
@@ -14,5 +13,9 @@ window.addEventListener('message', function(event) {
 		return;
 	}
 
+	// console.log( 'message forwared by content-script', message);
+
+	// send the message to "event listeners within your extension/app or a different extension/app.""
+	// https://developer.chrome.com/extensions/runtime#method-sendMessage
 	chrome.runtime.sendMessage(message);
 });

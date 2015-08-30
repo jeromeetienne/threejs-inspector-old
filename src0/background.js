@@ -1,23 +1,9 @@
 // chrome.extension calls
 var connections = {};
 
-chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
-         console.log('incoming message from injected script', request);
-        
-        // Messages from content scripts should have sender.tab set
-        if (sender.tab) {
-                var tabId = sender.tab.id;
-                if (tabId in connections) {
-                        connections[tabId].postMessage(request);
-                } else {
-                        console.log("Tab not found in connection list.", tabId, request);
-                }
-        } else {
-                console.log("sender.tab not defined.");
-        }
-        return true;
-});
-
+/**
+ * on chrome.onConnect.addListener - to maintains ```connections```
+ */
 chrome.runtime.onConnect.addListener(function(port) {
         
         console.log('three.js inspector: background page connected')
@@ -40,7 +26,30 @@ chrome.runtime.onConnect.addListener(function(port) {
         
 });
 
+/**
+ * on chrome.runtime.OnMessage to forward message
+ */
+chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+         console.log('incoming message from injected script', request);
+        
+        // Messages from content scripts should have sender.tab set
+        if (sender.tab) {
+                var tabId = sender.tab.id;
+                if (tabId in connections) {
+                        connections[tabId].postMessage(request);
+                } else {
+                        console.log("Tab not found in connection list.", tabId, request);
+                }
+        } else {
+                console.log("sender.tab not defined.");
+        }
+        return true;
+});
 
+
+/**
+ * chrome.webNavigation.onCommitted to send message to 'inject'
+ */
 chrome.webNavigation.onCommitted.addListener(function(data) {        
         console.log("onCommitted: " + data.url + ". Frame: " + data.frameId + ". Tab: " + data.tabId);
         

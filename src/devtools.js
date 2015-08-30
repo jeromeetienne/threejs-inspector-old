@@ -9,6 +9,7 @@ chrome.devtools.panels.create( "Three.js Inspector",
 );
 
 // Create a connection to the background page
+// - https://developer.chrome.com/extensions/runtime#method-connect
 var backgroundPageConnection = chrome.runtime.connect({
         name: 'panel'
 });

@@ -93,12 +93,12 @@ Inspect3js.instrumentWebGLRenderer	= function(renderer){
 		
 		// reccursiveAddObject(scene)
 		
-		window.postMessage({
-			source	: 'ThreejsEditor', 
-			method	: 'render', 
-			sceneId	: scene.uuid, 
-			cameraId: camera.uuid
-		}, '*');
+		// window.postMessage({
+		// 	source	: 'ThreejsEditor', 
+		// 	method	: 'render', 
+		// 	sceneId	: scene.uuid, 
+		// 	cameraId: camera.uuid
+		// }, '*');
 	}
 }
 //////////////////////////////////////////////////////////////////////////////////
