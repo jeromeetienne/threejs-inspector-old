@@ -15,21 +15,14 @@ chrome.runtime.onConnect.addListener(function(port) {
                 console.log('incoming message from dev tools page');
                 
                 // Register initial connection
-                if (request.name === 'init'){
+                if( request.name === 'init' ){
                         connections[request.tabId] = port;
                         console.log('three.js inspector: create connection from devtools to tabId', request.tabId)
                         port.onDisconnect.addListener(function(){
                                 delete connections[request.tabId];
                         })
                         return;
-                }else if( request.name === 'executeScript' ){
-                        console.log( 'inside background.js', request.details);
-                        // https://developer.chrome.com/extensions/tabs#method-executeScript
-                        chrome.tabs.executeScript(request.tabId, request.details, function(results){
-                                console.log('script executed. results =', results)
-                        })
-                        return                        
-                }                
+                }
         }
         
         // Listen to messages sent from the DevTools page
@@ -70,3 +63,25 @@ chrome.webNavigation.onCommitted.addListener(function(data) {
                 }
         }
 });
+
+////////////////////////////////////////////////////////////////////////////////
+//              myLogNotification
+////////////////////////////////////////////////////////////////////////////////
+
+function myLogNotification(string){
+        var args = Array.prototype.slice.call(arguments);
+        var options = {
+                type: "basic",
+                title: "Three.js Inspector",
+                message: args.join(' '),
+                iconUrl: 'images/icon_48.png',
+        };
+        chrome.notifications.create("", options, function(id) {
+                console.error(chrome.runtime.lastError);
+        });
+        
+}
+
+window.addEventListener('load', function(){
+        myLogNotification('background page loaded')
+})

@@ -23,13 +23,12 @@ InspectDevTools._onMessage	= function(message){
 
 
 			function injectFile(url){
-injectFile2(url); return
 				var request = new XMLHttpRequest();
 				request.open('GET', url, false);  // `false` makes the request synchronous
 				request.send(null);
 				console.assert(request.status === 200)
   				var content = request.responseText
-				
+
 				chrome.devtools.inspectedWindow.eval( content, function(result, isException){
 					if( isException ){
 						console.error('Exception while eval()', url)
@@ -38,16 +37,6 @@ injectFile2(url); return
 						// console.log('result = ', result)
 					}
 				})
-			}
-			function injectFile2(url){
-				backgroundPageConnection.postMessage({
-				        tabId: chrome.devtools.inspectedWindow.tabId,
-				        name: 'executeScript',
-				        details: {
-						file : url
-				                // code: 'console.log("CODE INJECTED")'
-				        }
-				});
 			}
 			break;
 		case 'init':

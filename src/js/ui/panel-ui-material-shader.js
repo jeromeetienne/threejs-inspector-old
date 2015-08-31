@@ -83,8 +83,8 @@ var PanelMaterialShader	= function(faceMaterialIndex){
 		if( material.uniforms !== undefined ){
 			Object.keys( material.uniforms ).forEach(function(name){
 				var data = material.uniforms[name]
-				console.log('materialShader', faceMaterialIndex)
-				console.dir(data)
+				// console.log('materialShader', faceMaterialIndex)
+				// console.dir(data)
 				if( data.type === 'f' ){
 					var numberRow = new UI.NumberRow()
 					numberRow.setLabel(name).setValue(data.value)
