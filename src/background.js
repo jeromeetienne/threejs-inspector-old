@@ -18,6 +18,7 @@ chrome.runtime.onConnect.addListener(function(port) {
                 if( request.name === 'init' ){
                         connections[request.tabId] = port;
                         console.log('three.js inspector: create connection from devtools to tabId', request.tabId)
+                        console.log('request', request)
                         port.onDisconnect.addListener(function(){
                                 delete connections[request.tabId];
                         })
@@ -58,7 +59,9 @@ chrome.webNavigation.onCommitted.addListener(function(data) {
         console.log("onCommitted: " + data.url + ". Frame: " + data.frameId + ". Tab: " + data.tabId);
         
         if( connections[ data.tabId ] ) {
+                console.log('has connection', connections[ data.tabId ])
                 if( data.frameId === 0 ) {
+                        console.log('frameId', data.frameId)
                         connections[ data.tabId ].postMessage( { method: 'inject' } );
                 }
         }
@@ -68,20 +71,20 @@ chrome.webNavigation.onCommitted.addListener(function(data) {
 //              myLogNotification
 ////////////////////////////////////////////////////////////////////////////////
 
-function myLogNotification(string){
-        var args = Array.prototype.slice.call(arguments);
-        var options = {
-                type: "basic",
-                title: "Three.js Inspector",
-                message: args.join(' '),
-                iconUrl: 'images/icon_48.png',
-        };
-        chrome.notifications.create("", options, function(id) {
-                console.error(chrome.runtime.lastError);
-        });
-        
-}
-
-window.addEventListener('load', function(){
-        myLogNotification('background page loaded')
-})
+// function myLogNotification(string){
+//         var args = Array.prototype.slice.call(arguments);
+//         var options = {
+//                 type: "basic",
+//                 title: "Three.js Inspector",
+//                 message: args.join(' '),
+//                 iconUrl: 'images/icon_48.png',
+//         };
+//         chrome.notifications.create("", options, function(id) {
+//                 console.error(chrome.runtime.lastError);
+//         });
+//         
+// }
+// 
+// window.addEventListener('load', function(){
+//         myLogNotification('background page loaded')
+// })
