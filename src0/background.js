@@ -13,14 +13,19 @@ chrome.runtime.onConnect.addListener(function(port) {
                 console.log('incoming message from dev tools page');
                 
                 // Register initial connection
-                if (request.name == 'init') {
+                if (request.name === 'init'){
                         connections[request.tabId] = port;
                         console.log('three.js inspector: create connection from devtools to tabId', request.tabId)
-                        port.onDisconnect.addListener(function() {
+                        port.onDisconnect.addListener(function(){
                                 delete connections[request.tabId];
-                        });
-                        
+                        })
                         return;
+                }else if( request.name === 'executeScript' ){
+                        console.log( 'inside background.js' );
+                        chrome.tabs.executeScript(request.tabId, request.details, function(results){
+                                console.log('script executed. results =', results)
+                        })
+                        return                        
                 }
         });
         

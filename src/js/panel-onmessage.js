@@ -13,14 +13,17 @@ InspectDevTools._onMessage	= function(message){
 			InspectDevTools.initAllUI();
 			
 			injectFile('js/libs/raf-throttler.js')
-			injectFile('js/contentscripts/00-instrumenttools.js')
-			injectFile('js/contentscripts/10-changefromdevtools.js')
-			injectFile('js/contentscripts/20-select.js')
-			injectFile('js/contentscripts/30-autorefresh.js')
-			injectFile('js/contentscripts/30-object3dtojson.js')
-			injectFile('js/contentscripts/99-instrumentation.js')
-			injectFile('js/contentscripts/99-onload.js')
+			injectFile('js/content-scripts/00-instrumenttools.js')
+			injectFile('js/content-scripts/10-changefromdevtools.js')
+			injectFile('js/content-scripts/20-select.js')
+			injectFile('js/content-scripts/30-autorefresh.js')
+			injectFile('js/content-scripts/30-object3dtojson.js')
+			injectFile('js/content-scripts/99-instrumentation.js')
+			injectFile('js/content-scripts/99-onload.js')
+
+
 			function injectFile(url){
+injectFile2(url); return
 				var request = new XMLHttpRequest();
 				request.open('GET', url, false);  // `false` makes the request synchronous
 				request.send(null);
@@ -35,6 +38,16 @@ InspectDevTools._onMessage	= function(message){
 						// console.log('result = ', result)
 					}
 				})
+			}
+			function injectFile2(url){
+				backgroundPageConnection.postMessage({
+				        tabId: chrome.devtools.inspectedWindow.tabId,
+				        name: 'executeScript',
+				        details: {
+						file : url
+				                // code: 'console.log("CODE INJECTED")'
+				        }
+				});
 			}
 			break;
 		case 'init':

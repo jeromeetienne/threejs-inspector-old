@@ -23,3 +23,23 @@ backgroundPageConnection.postMessage({
 backgroundPageConnection.onMessage.addListener(function(msg) {
         // console.log( 'devtools.js', msg );
 });
+
+backgroundPageConnection.postMessage({
+        name: 'init',
+        tabId: chrome.devtools.inspectedWindow.tabId
+});
+
+backgroundPageConnection.postMessage({
+        tabId: chrome.devtools.inspectedWindow.tabId,
+        name: 'executeScript',
+        details: {
+                // code: 'console.log("CODE INJECTED")'
+        }
+});
+
+// console.log( 'inside devtools.js' );
+// chrome.tabs.executeScript(chrome.devtools.inspectedWindow.tabId, {
+//         code: 'console.log("CODE INJECTED")'
+// }, function(){
+//         console.log('script executed')
+// })

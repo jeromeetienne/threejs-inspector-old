@@ -1,6 +1,8 @@
 // chrome.extension calls
 var connections = {};
 
+console.log('inside background page.')
+
 /**
  * on chrome.onConnect.addListener - to maintains ```connections```
  */
@@ -8,21 +10,30 @@ chrome.runtime.onConnect.addListener(function(port) {
         
         console.log('three.js inspector: background page connected')
         
-        // Listen to messages sent from the DevTools page
-        port.onMessage.addListener(function(request) {
+        
+        function onMessage(request){
                 console.log('incoming message from dev tools page');
                 
                 // Register initial connection
-                if (request.name == 'init') {
+                if (request.name === 'init'){
                         connections[request.tabId] = port;
-                        console.log('three.js inspector: create connection from devtools')
-                        port.onDisconnect.addListener(function() {
+                        console.log('three.js inspector: create connection from devtools to tabId', request.tabId)
+                        port.onDisconnect.addListener(function(){
                                 delete connections[request.tabId];
-                        });
-                        
+                        })
                         return;
-                }
-        });
+                }else if( request.name === 'executeScript' ){
+                        console.log( 'inside background.js', request.details);
+                        // https://developer.chrome.com/extensions/tabs#method-executeScript
+                        chrome.tabs.executeScript(request.tabId, request.details, function(results){
+                                console.log('script executed. results =', results)
+                        })
+                        return                        
+                }                
+        }
+        
+        // Listen to messages sent from the DevTools page
+        port.onMessage.addListener(onMessage);
         
 });
 
@@ -58,5 +69,4 @@ chrome.webNavigation.onCommitted.addListener(function(data) {
                         connections[ data.tabId ].postMessage( { method: 'inject' } );
                 }
         }
-        
 });
