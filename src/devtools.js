@@ -6,7 +6,7 @@ chrome.devtools.panels.create( "Three.js Inspector",
                 // code invoked on panel creation
                 console.log('three.js inspector: Panel created')
         }
-);
+)
 
 // Create a connection to the background page
 // - https://developer.chrome.com/extensions/runtime#method-connect

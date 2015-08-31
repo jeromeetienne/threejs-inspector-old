@@ -47,13 +47,12 @@ function onLoad(){
 		method: 'init'
 	}, '*');	
 }
-/** 
- * signal devtool panel that the injection is completed
- */
-window.addEventListener( 'load', onLoad)
 
-// if window already got loaded, call onLoad() manually
-if( document.readyState === 'complete' ){
+// signal devtool panel that the injection is completed
+if( document.readyState !== 'complete' ){
+	window.addEventListener( 'load', onLoad)
+}else{
+	// if window already got loaded, call onLoad() manually
 	onLoad()
 }
 
