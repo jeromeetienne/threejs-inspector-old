@@ -1,5 +1,6 @@
-// chrome.devtools calls
-chrome.devtools.panels.create( "Three.js Inspector",
+// Create the panel
+// - https://developer.chrome.com/extensions/devtools_panels
+chrome.devtools.panels.create( "Three.js Inspector0",
         "images/icon_48.png",
         "panel.html",
         function(panel) {
