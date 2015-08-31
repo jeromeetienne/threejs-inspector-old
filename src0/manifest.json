@@ -1,0 +1,22 @@
+{
+	"name": "Three.js Inspector0",
+	"version": "0.0.1",
+	"short_name": "3jsInspect0",
+	"devtools_page": "devtools.html",
+	"icons": {
+		"128": "images/icon_128.png",
+		"48": "images/icon_48.png",
+		"16": "images/icon_16.png"
+	},
+	"background": {
+		"scripts": [
+			"background.js"
+		]
+	},
+	"permissions": [
+		"http://*/*",
+		"https://*/*",
+		"webNavigation"
+	],
+	"manifest_version": 2
+}
