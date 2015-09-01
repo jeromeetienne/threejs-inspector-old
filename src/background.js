@@ -21,6 +21,8 @@ chrome.runtime.onConnect.addListener(function(port) {
                         if( request.tabId === undefined )       return
                         
                         connections[request.tabId] = port;
+                        console.log('three.js inspector: create connection from devtools to tabId', request.tabId)
+                        console.log('request', request)
                         port.onDisconnect.addListener(function(){
                                 delete connections[request.tabId];
                         })
@@ -61,7 +63,9 @@ chrome.webNavigation.onCommitted.addListener(function(data) {
         console.log("onCommitted: " + data.url + ". Frame: " + data.frameId + ". Tab: " + data.tabId);
         
         if( connections[ data.tabId ] ) {
+                console.log('has connection', connections[ data.tabId ])
                 if( data.frameId === 0 ) {
+                        console.log('frameId', data.frameId)
                         connections[ data.tabId ].postMessage( { method: 'inject' } );
                 }
         }

@@ -24,7 +24,7 @@
 	"permissions": [
 		"http://*/*",
 		"https://*/*",
-		"webNavigation" 
+		"webNavigation"
 	],
 	"manifest_version": 2,
 	"content_security_policy": "default-src 'self' chrome-extension-resource: ; img-src * ; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-eval'; connect-src *; frame-src *;",
