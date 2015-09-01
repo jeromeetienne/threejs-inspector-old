@@ -13,7 +13,7 @@ window.addEventListener('message', function(event) {
 		return;
 	}
 
-	// console.log( 'message forwared by content-script', message);
+	console.log( 'message forwarded by content-script', message);
 
 	// send the message to "event listeners within your extension/app or a different extension/app.""
 	// https://developer.chrome.com/extensions/runtime#method-sendMessage

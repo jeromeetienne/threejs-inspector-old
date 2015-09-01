@@ -15,9 +15,10 @@ var backgroundPageConnection = chrome.runtime.connect({
 });
 
 backgroundPageConnection.postMessage({
-        name: 'init',
+        name: 'initInspector',
+        jejeSource: 'devtool.js',
         tabId: chrome.devtools.inspectedWindow.tabId
-});
+});        
 
 backgroundPageConnection.onMessage.addListener(function(msg) {
         // console.log( 'devtools.js', msg );
