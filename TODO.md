@@ -1,3 +1,16 @@
+## Implement the editor
+- use the 'render' message
+- count the renderer.render(), zero on requestAnimationFrame()
+- in the devtools change the mechanism to attach the UI
+- GOOD! this is just a simple UI issue in the code. doable
+
+- on 'render' reception what to do
+  - find the camera, find the SCENE
+  - create the renderer if it doesnt already exists
+  - attach the camera and the scene, to this renderer
+
+
+
 ## Next steps
 - try to do an experiment of an extension which inject a script
   - standalone for better understanding

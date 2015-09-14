@@ -61,7 +61,7 @@ var PanelTreeView	= function(){
 container.content.appendChild( document.createElement('br') )
 	// create TreeView
 	var treeView = new TreeView( container.content );
-	treeView.onSelect = function( object3dUuid ) {
+	treeView.onSelect = function( object3dUuid ){
 		if( object3dUuid === null )	treeView.clearActive()
 		InspectDevTools.plainFunction(function(uuid){
 			Inspect3js.UISelect( uuid )
@@ -82,8 +82,7 @@ container.content.appendChild( document.createElement('br') )
 		}, [object3dUuid])
 	}
 	
-	
-	threeViewItem = new TreeViewItem( 'Renderer', null );
+	threeViewItem = new TreeViewItem( 'Scenes', null );
 	treeView.getRoot().appendChild( threeViewItem );
 
 

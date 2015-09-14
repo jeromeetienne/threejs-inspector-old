@@ -86,23 +86,36 @@ function removeObject( object, parent ) {
 //		Comments
 //////////////////////////////////////////////////////////////////////////////////
 
-Inspect3js.instrumentWebGLRenderer	= function(renderer){
-	var previousFunction = renderer.render;
-	renderer.render = function(scene, camera) {
-		previousFunction.apply( renderer, arguments );
-		
-		// reccursiveAddObject(scene)
-		
-		// // notify render event 
-		// // - disabled as it takes rescources and isnt used
-		// window.postMessage({
-		// 	source	: 'ThreejsEditor', 
-		// 	method	: 'render', 
-		// 	sceneId	: scene.uuid, 
-		// 	cameraId: camera.uuid
-		// }, '*');
+
+
+Inspect3js.instrumentWebGLRenderer	= (function(){
+	var renderingId	= 0;
+	requestAnimationFrame(function callback(){
+		requestAnimationFrame(callback)
+		renderingId	= 0
+	})
+	return function(renderer){
+		var previousFunction = renderer.render;
+		renderer.render = function(scene, camera) {
+			previousFunction.apply( renderer, arguments );
+			
+			// reccursiveAddObject(scene)
+			
+			// notify render event 
+			// - disabled as it takes rescources and isnt used
+			window.postMessage({
+				source	: 'ThreejsEditor', 
+				method	: 'render', 
+				sceneUUID	: scene.uuid, 
+				cameraUUID	: camera.uuid,
+				renderingId	: renderingId,
+			}, '*');
+
+			// increase renderingId
+			renderingId++
+		}
 	}
-}
+})()
 //////////////////////////////////////////////////////////////////////////////////
 //		Comments
 //////////////////////////////////////////////////////////////////////////////////

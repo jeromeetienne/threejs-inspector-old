@@ -14,7 +14,7 @@ var editor	= new Editor()
 //////////////////////////////////////////////////////////////////////////////////
 
 var objects = {};
-var scenes = {};
+var renderings = {};
 
 	
 //////////////////////////////////////////////////////////////////////////////////
@@ -23,7 +23,7 @@ var scenes = {};
 
 console.log( 'starting' );
 
-document.getElementById( 'reload' ).addEventListener( 'click', function( e ) {
+document.getElementById( 'reload' ).addEventListener( 'click', function( event ) {
 	console.log('RELOAD the inspectedWindow')
 	chrome.devtools.inspectedWindow.reload( {
 		ignoreCache: false

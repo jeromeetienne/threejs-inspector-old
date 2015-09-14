@@ -8,6 +8,23 @@ It is a fork from
 [WebGL GLSL Shader Editor Extension for Google Chrome](https://github.com/spite/ShaderEditorExtension)
 by the excelent @thespite. Check it out! 
 
+
+## How to install
+
+You can install the extensions directly from the chrome store
+
+[three.js inspector chrome extension](https://chrome.google.com/webstore/detail/threejs-inspector/dnhjfclbfhcbcdfpjaeacomhbdfjbebi)
+
+copy the repo files to your computer and launch the extension as a developer.
+Follow those steps:
+
+- copy the repository files - [zip](https://github.com/jeromeetienne/threejs-inspector/archive/master.zip)
+- Goto the Chrome's Extensions page : Settings -> More tools -> Extensions
+- Enable Developer Mode
+- Click on "Load unpacked extension"...
+- Select the folder /src in the checked out project
+
+
 ## History 1.2.9
 - better css for inline link to three.js help
 - added console.dir when exporting objects to console
