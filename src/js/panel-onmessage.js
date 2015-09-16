@@ -116,14 +116,7 @@ InspectDevTools._onMessage	= function(message){
 			break;
 		case 'render':
 			// console.log( 'RENDER RENDER' , message);
-			/*g.setEdge( message.cameraId, message.sceneId, { 
-				lineInterpolate: 'basis', 
-				arrowhead: 'normal', 
-				style: "stroke-dasharray: 5, 5;",
-			} );*/
-			// if( renderings[message.renderingId] !== undefined ){
-			// 	renderings[ message.renderingId ].cameraUUID
-			// }
+
 			
 			// if( renderings[message.renderingId] === undefined ){
 			// 	var viewItem	= new TreeViewItem( 'Rendering '+message.renderingId, null);
@@ -138,17 +131,18 @@ InspectDevTools._onMessage	= function(message){
 			// 	console.log('create renderer', message.renderingId, renderings[ message.renderingId ])
 			// 	console.log('viewItem renderer', threeViewItem, viewItem)
 			// 
-			// 	var rendering = renderings[ message.renderingId ]
-			// 	// add camera
-			// 	var camera = objects[ message.cameraUUID ]
-			// 	if( camera ){
-			// 		rendering.viewItem.appendChild( camera.data.viewItem );
-			// 	}
-			// 	// add scene
-			// 	var scene = objects[ message.sceneUUID ]
-			// 	if( scene ){
-			// 		rendering.viewItem.appendChild( scene.data.viewItem );
-			// 	}
+			// }
+			// 
+			// var rendering = renderings[ message.renderingId ]
+			// // add camera
+			// var camera = objects[ message.cameraUUID ]
+			// if( camera ){
+			// 	rendering.viewItem.appendChild( camera.data.viewItem );
+			// }
+			// // add scene
+			// var scene = objects[ message.sceneUUID ]
+			// if( scene ){
+			// 	rendering.viewItem.appendChild( scene.data.viewItem );
 			// }
 			break;
 		case 'log':

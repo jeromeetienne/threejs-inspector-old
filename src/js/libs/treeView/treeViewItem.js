@@ -170,6 +170,9 @@ TreeViewItem.prototype._updateCollapseIcon = function () {
  * @param {TreeViewItem} child - the child to add
  */
 TreeViewItem.prototype.appendChild = function( childItem ) {
+	
+	if( childItem.parentItem === this )	return
+
 	childItem.detach()
 
 	childItem.treeView = this.treeView;

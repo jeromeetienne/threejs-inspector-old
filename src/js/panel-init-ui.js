@@ -6,10 +6,9 @@ var InspectDevTools	= InspectDevTools	|| {}
 InspectDevTools.initRightSideBar	= function(){
 	// empty treeViewContainer
 	var domElement	= document.querySelector( '#rightSidebar' )
-	while( domElement.firstChild ){		
+	while( domElement.firstChild ){
 		domElement.removeChild( domElement.firstChild );
 	}
-
 
 	// create tab container
 	var tabContainer	= new UI.TabsHelper.createTabContainer('inspectorSidebar', 0)
@@ -94,7 +93,7 @@ InspectDevTools.initAllUI	= function(){
 	//////////////////////////////////////////////////////////////////////////////////
 
 	objects = {};
-	scenes = {};
+	renderings = {};
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Comments
 	//////////////////////////////////////////////////////////////////////////////////
